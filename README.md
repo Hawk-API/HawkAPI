@@ -14,7 +14,7 @@
   <a href="https://github.com/ashimov/HawkAPI"><img src="https://img.shields.io/badge/coverage-95%25-brightgreen.svg" alt="Coverage"></a>
   <a href="https://hawkapi.ashimov.com"><img src="https://img.shields.io/badge/docs-hawkapi.ashimov.com-blue.svg" alt="Docs"></a>
   <a href="https://pypi.org/project/hawkapi/"><img src="https://img.shields.io/pypi/dm/hawkapi.svg" alt="Downloads"></a>
-  <a href="benchmarks/competitive/RESULTS.md"><img src="https://img.shields.io/badge/benchmarks-5%2F6%20%F0%9F%8F%86-brightgreen.svg" alt="Benchmarks"></a>
+  <a href="benchmarks/competitive/RESULTS.md"><img src="https://img.shields.io/badge/benchmarks-6%2F6%20%F0%9F%8F%86-brightgreen.svg" alt="Benchmarks"></a>
 </p>
 
 ---
