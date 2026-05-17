@@ -21,7 +21,7 @@ HawkAPI provides authentication schemes that integrate with OpenAPI.
 For threat-model, OWASP API Top 10 compliance map, and responsible-disclosure
 policy see:
 
-- [`SECURITY.md`](https://github.com/ashimov/HawkAPI/blob/main/SECURITY.md) — disclosure policy
+- [`SECURITY.md`](https://github.com/Hawk-API/HawkAPI/blob/main/SECURITY.md) — disclosure policy
 - [`docs/security/threat-model.md`](../security/threat-model.md) — STRIDE per subsystem
 - [`docs/security/owasp-api-top10-2023.md`](../security/owasp-api-top10-2023.md) — compliance map
 - `hawkapi doctor app:app` — lint 18 production-readiness rules

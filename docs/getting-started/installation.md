@@ -30,7 +30,7 @@ pip install "hawkapi[all]"
 ## Development Install
 
 ```bash
-git clone https://github.com/ashimov/HawkAPI.git
+git clone https://github.com/Hawk-API/HawkAPI.git
 cd hawkapi
 pip install -e ".[dev]"
 ```

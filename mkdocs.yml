@@ -1,8 +1,8 @@
 site_name: HawkAPI
 site_description: High-performance Python web framework
 site_url: https://hawkapi.ashimov.com
-repo_url: https://github.com/ashimov/HawkAPI
-repo_name: ashimov/HawkAPI
+repo_url: https://github.com/Hawk-API/HawkAPI
+repo_name: Hawk-API/HawkAPI
 
 theme:
   name: material

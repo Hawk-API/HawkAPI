@@ -37,7 +37,7 @@ If a fix takes longer than 30 days we will keep you updated and credit you in th
 
 In-scope:
 
-- The `hawkapi` package on PyPI and the `ashimov/HawkAPI` repository
+- The `hawkapi` package on PyPI and the `Hawk-API/HawkAPI` repository
 - The official plugins `hawkapi-sentry`, `hawkapi-otel`
 - All CI workflows in this repository
 
