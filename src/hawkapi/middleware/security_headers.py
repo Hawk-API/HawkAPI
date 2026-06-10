@@ -15,7 +15,9 @@ class SecurityHeadersMiddleware(Middleware):
     - X-Content-Type-Options: nosniff
     - X-Frame-Options: DENY
     - X-XSS-Protection: 1; mode=block
-    - Strict-Transport-Security (via ``hsts`` param, off by default)
+    - Strict-Transport-Security (via ``hsts`` param; defaults to one year with
+      ``includeSubDomains``). Pass ``hsts=None`` to disable it — necessary for
+      local HTTP development, since browsers will otherwise force HTTPS.
     - Referrer-Policy: strict-origin-when-cross-origin
     - Permissions-Policy (via ``permissions_policy`` param)
     - Content-Security-Policy (via ``content_security_policy`` param)
@@ -28,7 +30,7 @@ class SecurityHeadersMiddleware(Middleware):
         content_type_options: str = "nosniff",
         frame_options: str = "DENY",
         xss_protection: str = "1; mode=block",
-        hsts: str | None = None,
+        hsts: str | None = "max-age=31536000; includeSubDomains",
         referrer_policy: str = "strict-origin-when-cross-origin",
         permissions_policy: str | None = None,
         content_security_policy: str | None = None,

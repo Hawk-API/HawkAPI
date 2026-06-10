@@ -218,6 +218,15 @@ class CSRFMiddleware(Middleware):
             await response(scope, receive, send)
             return
 
+        # Verify the HMAC signature of the submitted token before (and in
+        # addition to) the constant-time comparison against the cookie value.
+        # Without this, the secret is unused and protection degrades to a naive
+        # double-submit cookie.
+        if not self._verify_token(submitted_token):
+            response = self._forbidden_response("CSRF token signature invalid.")
+            await response(scope, receive, send)
+            return
+
         if not hmac.compare_digest(submitted_token, cookie_token):
             response = self._forbidden_response("CSRF token mismatch.")
             await response(scope, receive, send)

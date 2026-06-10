@@ -90,9 +90,12 @@ class TrustedProxyMiddleware(Middleware):
             if real_ip is not None:
                 new_scope["client"] = (real_ip, 0)
 
-        # Rewrite scheme from X-Forwarded-Proto
+        # Rewrite scheme from X-Forwarded-Proto (only accept known schemes;
+        # otherwise leave the existing scheme untouched)
         if forwarded_proto:
-            new_scope["scheme"] = forwarded_proto.strip().lower()
+            proto = forwarded_proto.strip().lower()
+            if proto in ("http", "https"):
+                new_scope["scheme"] = proto
 
         # Rewrite host header from X-Forwarded-Host
         if forwarded_host:

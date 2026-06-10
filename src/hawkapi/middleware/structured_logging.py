@@ -63,7 +63,14 @@ class StructuredLoggingMiddleware(Middleware):
             if key == self._request_id_header:
                 request_id = value.decode("latin-1")
                 break
-        if request_id is None:
+        # Reject overly long, injection-prone, or non-printable request IDs
+        # (mirrors RequestIDMiddleware) to avoid log injection.
+        if (
+            request_id is None
+            or len(request_id) > 128
+            or not request_id.isascii()
+            or any(ord(c) < 0x20 for c in request_id)
+        ):
             request_id = str(uuid.uuid4())
 
         start = time.monotonic()

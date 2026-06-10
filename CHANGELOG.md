@@ -4,6 +4,25 @@ The format is loosely based on [Keep a Changelog](https://keepachangelog.com/en/
 
 ## [Unreleased]
 
+## 0.2.0 — 2026-06-10
+
+Security hardening.
+
+### Security
+
+- CSRF middleware now verifies the HMAC signature of the submitted token before the constant-time comparison against the cookie value. The signature was never checked before, leaving the secret unused and protection degraded to a naive double-submit cookie (CWE-352).
+- OpenAPI UI templates (Swagger UI, Scalar, ReDoc) HTML-escape the title and JSON-encode the OpenAPI URL in JS contexts; CDN assets pinned to exact versions (`swagger-ui-dist@5.17.14`, `@scalar/api-reference@1.25.28`, `redoc@2.1.5`) instead of floating `@5` / `@latest` tags (CWE-79).
+- `DebugMiddleware` now defaults to `enabled=False` (was `True`); the route map and request stats are no longer exposed by default (CWE-489).
+- `TrustedProxyMiddleware` only rewrites the scheme for `X-Forwarded-Proto` values of `http` or `https`; any other value leaves the existing scheme untouched.
+- `StructuredLoggingMiddleware` validates client-supplied request IDs (length ≤ 128, ASCII, no control characters) before logging, falling back to a generated UUID otherwise (log injection — CWE-117).
+- `parse_multipart` enforces a `max_parts` limit (default 1000), raising `ValueError` on bodies with more parts, to prevent part-flooding denial of service (CWE-770).
+- `SecurityHeadersMiddleware` sets HSTS by default (`max-age=31536000; includeSubDomains`); pass `hsts=None` to disable for local HTTP development.
+- `ErrorHandlerMiddleware` documents that `debug=True` leaks tracebacks and must never be enabled in production; the default remains `False`.
+
+### Changed
+
+- Project scaffold no longer ships `CORSMiddleware` with `allow_origins=["*"]`; it emits a placeholder origin and a `TODO` instructing operators to set real origins before production.
+
 ## [0.1.7] - 2026-05-16
 
 Static-response cache. Plaintext throughput jumped from #2 to #1 in the competitive suite, and we lead all six scenarios on both throughput and p99 latency now.

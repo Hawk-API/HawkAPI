@@ -25,7 +25,7 @@ class DebugMiddleware(Middleware):
         app: ASGIApp,
         *,
         prefix: str = "/_debug",
-        enabled: bool = True,
+        enabled: bool = False,
     ) -> None:
         super().__init__(app)
         self._prefix = prefix

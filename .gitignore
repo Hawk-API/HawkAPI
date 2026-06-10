@@ -34,5 +34,5 @@ coverage.xml
 site/
 .remember/
 
-# Local Claude worktrees / state
+# Local tooling worktrees / state
 .claude/

@@ -18,6 +18,13 @@ class ErrorHandlerMiddleware(Middleware):
     """Catch exceptions and return structured error responses."""
 
     def __init__(self, app: ASGIApp, *, debug: bool = False) -> None:
+        """Initialize the error handler.
+
+        WARNING: ``debug=True`` returns the full exception traceback in the
+        HTTP response body. This leaks source paths, code, and internal state.
+        It is a development-only aid and MUST NEVER be enabled in production.
+        The default is ``False``.
+        """
         super().__init__(app)
         self.debug = debug
 

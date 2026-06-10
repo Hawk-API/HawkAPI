@@ -53,8 +53,9 @@ async def get_greeting_service() -> GreetingService:
 
 app = HawkAPI(title="{name}", container=container)
 
-# CORSMiddleware: allows cross-origin requests from any origin.
-app.add_middleware(CORSMiddleware, allow_origins=["*"])
+# CORSMiddleware: restrict cross-origin requests to known origins.
+# TODO: set real origins before production. Never ship allow_origins=["*"].
+app.add_middleware(CORSMiddleware, allow_origins=["https://example.com"])
 
 # RequestIDMiddleware: assigns a unique ID to every request (useful for tracing).
 app.add_middleware(RequestIDMiddleware)

@@ -36,7 +36,7 @@ class TestDebugRoutes:
     @pytest.mark.asyncio
     async def test_debug_routes_returns_registered_routes(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/items")
         async def list_items():
@@ -66,7 +66,7 @@ class TestDebugRoutes:
     @pytest.mark.asyncio
     async def test_debug_routes_shows_deprecated(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/old", deprecated=True)
         async def old_endpoint():
@@ -80,7 +80,7 @@ class TestDebugRoutes:
     @pytest.mark.asyncio
     async def test_debug_routes_methods_sorted(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/test")
         async def test_handler():
@@ -97,7 +97,7 @@ class TestDebugStats:
     @pytest.mark.asyncio
     async def test_stats_empty_initially(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/test")
         async def handler():
@@ -111,7 +111,7 @@ class TestDebugStats:
     @pytest.mark.asyncio
     async def test_stats_after_request(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/test")
         async def handler():
@@ -133,7 +133,7 @@ class TestDebugStats:
     @pytest.mark.asyncio
     async def test_stats_multiple_requests(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/test")
         async def handler():
@@ -152,7 +152,7 @@ class TestDebugStats:
     @pytest.mark.asyncio
     async def test_stats_tracks_errors(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         # A request to a non-existent path should return 404 (not 5xx)
         # So let's make a handler that causes a 500
@@ -173,7 +173,7 @@ class TestDebugStats:
     async def test_stats_does_not_track_debug_endpoints(self):
         """Debug endpoints themselves should not appear in stats."""
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware)
+        app.add_middleware(DebugMiddleware, enabled=True)
 
         @app.get("/test")
         async def handler():
@@ -195,7 +195,7 @@ class TestDebugCustomPrefix:
     @pytest.mark.asyncio
     async def test_custom_prefix(self):
         app = HawkAPI()
-        app.add_middleware(DebugMiddleware, prefix="/_internal")
+        app.add_middleware(DebugMiddleware, prefix="/_internal", enabled=True)
 
         @app.get("/test")
         async def handler():

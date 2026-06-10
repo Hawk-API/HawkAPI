@@ -7,6 +7,10 @@ from __future__ import annotations
 
 from urllib.parse import parse_qs
 
+# Maximum number of parts accepted in a single multipart/form-data body.
+# Guards against denial-of-service via a body with a huge number of parts.
+DEFAULT_MAX_PARTS = 1000
+
 
 class UploadFile:
     """Represents an uploaded file with async read/seek interface."""
@@ -93,8 +97,13 @@ def parse_urlencoded(body: bytes) -> FormData:
     return FormData(fields=fields)
 
 
-def parse_multipart(body: bytes, boundary: str) -> FormData:
-    """Parse multipart/form-data body."""
+def parse_multipart(
+    body: bytes, boundary: str, max_parts: int = DEFAULT_MAX_PARTS
+) -> FormData:
+    """Parse multipart/form-data body.
+
+    Raises ``ValueError`` if the body contains more than *max_parts* parts.
+    """
     fields: dict[str, str] = {}
     files: dict[str, UploadFile] = {}
 
@@ -102,9 +111,14 @@ def parse_multipart(body: bytes, boundary: str) -> FormData:
     delimiter = b"--" + boundary_bytes
     parts = body.split(delimiter)
 
+    part_count = 0
     for part in parts[1:]:  # Skip preamble
         if part.startswith(b"--"):
             break  # End marker
+
+        part_count += 1
+        if part_count > max_parts:
+            raise ValueError(f"multipart body exceeds maximum of {max_parts} parts")
 
         # Split headers and body
         if b"\r\n\r\n" in part:
