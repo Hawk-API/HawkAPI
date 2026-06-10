@@ -80,4 +80,4 @@ API keys can also be read from query parameters (`APIKeyQuery`) or cookies (`API
 
 ## CSRF Protection
 
-HawkAPI includes built-in CSRF protection via `CSRFMiddleware`, which implements the double-submit cookie pattern. See the [Middleware guide](middleware.md#csrf-middleware) for configuration options and usage examples.
+HawkAPI includes built-in CSRF protection via `CSRFMiddleware`, which implements a signed double-submit cookie pattern: the token carries an HMAC-SHA256 signature that is verified against the configured `secret` before the constant-time comparison against the cookie value. See the [Middleware guide](middleware.md#csrf-middleware) for configuration options and usage examples.

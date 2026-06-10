@@ -48,7 +48,7 @@ app.add_middleware(TimingMiddleware)
 
 | Middleware | Description | Extra |
 |-----------|-------------|-------|
-| `CSRFMiddleware` | CSRF protection (double-submit cookie) | — |
+| `CSRFMiddleware` | CSRF protection (signed double-submit cookie) | — |
 | `SessionMiddleware` | Signed cookie-based sessions | — |
 | `RedisRateLimitMiddleware` | Redis-backed rate limiting | `redis` |
 | `CORSMiddleware` | Cross-Origin Resource Sharing | — |
@@ -151,7 +151,7 @@ app.add_middleware(PrometheusMiddleware)
 
 ## CSRF Middleware
 
-HawkAPI includes CSRF protection using the **double-submit cookie** pattern. A CSRF token is set in a cookie on safe requests (GET, HEAD, OPTIONS) and must be echoed back via a header or form field on unsafe requests (POST, PUT, DELETE, PATCH).
+HawkAPI includes CSRF protection using the **signed double-submit cookie** pattern. A CSRF token is set in a cookie on safe requests (GET, HEAD, OPTIONS) and must be echoed back via a header or form field on unsafe requests (POST, PUT, DELETE, PATCH).
 
 ```python
 from hawkapi.middleware.csrf import CSRFMiddleware
@@ -162,7 +162,7 @@ app.add_middleware(
 )
 ```
 
-On safe requests, the middleware sets a `csrftoken` cookie automatically. On unsafe requests, the client must send the token back via the `X-CSRF-Token` header or a `csrf_token` form field. If the token is missing or does not match, a 403 response is returned.
+On safe requests, the middleware sets a `csrftoken` cookie automatically. The token is an HMAC-SHA256-signed value (`<random>.<signature>`). On unsafe requests, the client must send the token back via the `X-CSRF-Token` header or a `csrf_token` form field. The submitted token's HMAC signature is verified against the configured `secret` before a constant-time comparison against the cookie value, so a forged token without a valid signature is rejected. If the token is missing, its signature is invalid, or it does not match the cookie, a 403 response is returned.
 
 | Option | Default | Description |
 |--------|---------|-------------|

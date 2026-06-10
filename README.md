@@ -347,7 +347,7 @@ class AuthMiddleware(Middleware):
 | `CircuitBreakerMiddleware` | Three-state circuit breaker (per-path tracking) |
 | `RedisCircuitBreakerMiddleware` | Distributed circuit breaker (Redis-backed) |
 | `AdaptiveConcurrencyMiddleware` | Adaptive in-flight limit based on latency |
-| `CSRFMiddleware` | Double-submit cookie CSRF protection |
+| `CSRFMiddleware` | Signed double-submit cookie CSRF protection |
 | `SessionMiddleware` | Signed cookie-based session management |
 | `ErrorHandlerMiddleware` | Structured error handling pipeline |
 | `PrometheusMiddleware` | Prometheus-compatible `/metrics` endpoint |
@@ -771,7 +771,7 @@ Rejects oversized requests at the ASGI scope level before body parsing. Returns 
 
 ### CSRF Protection
 
-Double-submit cookie CSRF protection. Safe methods (GET, HEAD, OPTIONS) pass through and receive a signed CSRF token cookie. Unsafe methods require the token in an `X-CSRF-Token` header or `csrf_token` form field:
+Signed double-submit cookie CSRF protection. Safe methods (GET, HEAD, OPTIONS) pass through and receive a signed CSRF token cookie. Unsafe methods require the token in an `X-CSRF-Token` header or `csrf_token` form field:
 
 ```python
 from hawkapi.middleware.csrf import CSRFMiddleware
@@ -786,7 +786,7 @@ app.add_middleware(
 )
 ```
 
-Returns 403 with `application/problem+json` when the token is missing or mismatched. Tokens are HMAC-SHA256 signed and verified with `hmac.compare_digest` for timing safety.
+Returns 403 with `application/problem+json` when the token is missing, its signature is invalid, or it does not match the cookie. Tokens are HMAC-SHA256 signed; the submitted token's signature is verified against the secret before a constant-time `hmac.compare_digest` comparison against the cookie value.
 
 ### Session Middleware
 
