@@ -97,9 +97,7 @@ def parse_urlencoded(body: bytes) -> FormData:
     return FormData(fields=fields)
 
 
-def parse_multipart(
-    body: bytes, boundary: str, max_parts: int = DEFAULT_MAX_PARTS
-) -> FormData:
+def parse_multipart(body: bytes, boundary: str, max_parts: int = DEFAULT_MAX_PARTS) -> FormData:
     """Parse multipart/form-data body.
 
     Raises ``ValueError`` if the body contains more than *max_parts* parts.
