@@ -2,6 +2,7 @@
 
 from __future__ import annotations
 
+from importlib.metadata import PackageNotFoundError, version
 from typing import TYPE_CHECKING, Any
 
 # Eager imports — core types used in every application
@@ -79,7 +80,10 @@ if TYPE_CHECKING:
     from hawkapi.validation.constraints import Body, Cookie, Header, Path, Query
     from hawkapi.websocket import WebSocket, WebSocketDisconnect
 
-__version__ = "0.1.7"
+try:
+    __version__ = version("hawkapi")
+except PackageNotFoundError:  # pragma: no cover - running from a source tree without install
+    __version__ = "0.0.0"
 
 # Lazy imports — loaded on first access for faster cold start
 _LAZY_IMPORTS: dict[str, tuple[str, str]] = {
