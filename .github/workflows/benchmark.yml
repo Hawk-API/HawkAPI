@@ -63,7 +63,7 @@ jobs:
 
       - name: Open PR with refreshed RESULTS.md
         if: github.event_name != 'release'
-        uses: peter-evans/create-pull-request@v7
+        uses: peter-evans/create-pull-request@v8
         with:
           add-paths: benchmarks/competitive/RESULTS.md
           branch: chore/refresh-benchmarks
